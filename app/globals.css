@@ -1,0 +1,235 @@
+@import "tailwindcss";
+
+/* ───────────────────────── Sistema visual GT Rental ───────────────────────── */
+@theme inline {
+  --color-gt-blue: #174fc1;
+  --color-gt-blue-600: #1a5ad8;
+  --color-gt-deep: #153879;
+  --color-gt-orange: #ff842f;
+  --color-gt-orange-600: #f2711a;
+  --color-ink: #0a0d14;
+  --color-ink-2: #11151f;
+  --color-graphite: #202631;
+  --color-mist: #f3f4f6;
+  --color-line: #e5e7eb;
+
+  --font-display: var(--font-archivo), "Arial Narrow", system-ui, sans-serif;
+  --font-sans: var(--font-inter), system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-white font-sans text-ink antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background: var(--color-gt-orange);
+    color: #fff;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-gt-orange);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-[1320px] px-5 sm:px-8 lg:px-12;
+  }
+
+  /* Titulares condensados editoriales */
+  .display {
+    font-family: var(--font-display);
+    font-variation-settings: "wdth" 72;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    line-height: 0.92;
+  }
+  .display-wide {
+    font-family: var(--font-display);
+    font-variation-settings: "wdth" 100;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+  .eyebrow {
+    @apply inline-flex items-center gap-3 text-[11px] font-semibold tracking-[0.22em] uppercase;
+  }
+  .eyebrow::before {
+    content: "";
+    @apply block h-px w-8 bg-gt-orange;
+  }
+
+  /* Botones */
+  .btn {
+    @apply relative inline-flex min-h-12 items-center justify-center gap-2.5 overflow-hidden rounded-full px-6 text-[13px] font-semibold tracking-[0.08em] uppercase transition-[background-color,color,box-shadow,transform] duration-300 ease-out select-none active:scale-[0.97] disabled:pointer-events-none disabled:opacity-60;
+  }
+  .btn svg {
+    @apply transition-transform duration-300;
+  }
+  .btn:hover svg.arrow {
+    transform: translateX(4px);
+  }
+  .btn-primary {
+    @apply bg-gt-orange text-ink hover:bg-[#ff9548] hover:shadow-[0_10px_30px_-10px_rgba(255,132,47,0.8)];
+  }
+  .btn-blue {
+    @apply bg-gt-blue text-white hover:bg-gt-blue-600 hover:shadow-[0_10px_30px_-10px_rgba(23,79,193,0.8)];
+  }
+  .btn-ghost-light {
+    @apply border border-white/25 text-white backdrop-blur-sm hover:border-white/60 hover:bg-white/10;
+  }
+  .btn-ghost-dark {
+    @apply border border-ink/15 text-ink hover:border-ink/40 hover:bg-ink/[0.03];
+  }
+
+  /* Formularios */
+  .field {
+    @apply block w-full rounded-xl border border-line bg-white px-4 py-3.5 text-[16px] text-ink transition-[border-color,box-shadow] outline-none placeholder:text-ink/35 focus:border-gt-blue focus:ring-4 focus:ring-gt-blue/10;
+  }
+  .field[aria-invalid="true"] {
+    @apply border-red-500 focus:ring-red-500/10;
+  }
+  .label {
+    @apply mb-2 block text-[13px] font-semibold text-graphite;
+  }
+
+  .grain {
+    position: relative;
+  }
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.06;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay;
+  }
+}
+
+/* ───────────────────────── Preloader ───────────────────────── */
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: var(--color-ink);
+  animation: preloader-out 0.6s var(--ease-out-expo) 1.15s forwards;
+}
+.preloader__road {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  transform-origin: left;
+  background: linear-gradient(90deg, transparent, var(--color-gt-blue) 30%, var(--color-gt-blue));
+  animation: road 0.9s var(--ease-out-expo) 0.05s both;
+}
+.preloader__spark {
+  position: absolute;
+  top: calc(50% - 1px);
+  left: 0;
+  height: 4px;
+  width: 90px;
+  margin-top: -1px;
+  border-radius: 4px;
+  background: var(--color-gt-orange);
+  box-shadow: 0 0 24px 4px rgba(255, 132, 47, 0.55);
+  animation: spark 0.95s cubic-bezier(0.7, 0, 0.2, 1) 0.05s both;
+}
+.preloader__logo {
+  position: relative;
+  animation: logo-in 0.7s var(--ease-out-expo) 0.45s both;
+}
+html[data-preloaded] .preloader {
+  display: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .preloader {
+    display: none;
+  }
+}
+@keyframes road {
+  from { transform: scaleX(0); opacity: 1; }
+  to { transform: scaleX(1); opacity: 0.35; }
+}
+@keyframes spark {
+  from { transform: translateX(-120px); }
+  to { transform: translateX(calc(100vw + 40px)); }
+}
+@keyframes logo-in {
+  from { opacity: 0; transform: translateY(10px) scale(0.96); filter: blur(6px); }
+  to { opacity: 1; transform: none; filter: none; }
+}
+@keyframes preloader-out {
+  to { clip-path: inset(0 0 100% 0); visibility: hidden; }
+}
+
+/* Transición entre páginas (funciona sin JS) */
+.page-enter {
+  animation: page-in 0.6s var(--ease-out-expo) both;
+}
+@keyframes page-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Líneas de carretera */
+.road-dash {
+  background-image: linear-gradient(90deg, currentColor 50%, transparent 50%);
+  background-size: 28px 2px;
+  background-repeat: repeat-x;
+  animation: dash 1.2s linear infinite;
+}
+@keyframes dash {
+  to { background-position: -28px 0; }
+}
+.road-dash-v {
+  background-image: linear-gradient(180deg, currentColor 50%, transparent 50%);
+  background-size: 2px 22px;
+  background-repeat: repeat-y;
+  animation: dash-v 1.4s linear infinite;
+}
+@keyframes dash-v {
+  to { background-position: 0 22px; }
+}
+
+/* Marquee editorial */
+.marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 38s linear infinite;
+}
+@keyframes marquee {
+  to { transform: translateX(-50%); }
+}
+
+.scrollbar-none {
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
